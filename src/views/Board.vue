@@ -76,6 +76,7 @@ export default {
   height: 100vh;
   justify-content: flex-start;
   overflow: auto;
+  width: 100%;
 }
 .new-element:hover {
   background-color: rgb(176, 176, 176);
@@ -114,6 +115,7 @@ export default {
   flex-shrink: 0;
   font-weight: bold;
   width: 100%;
+  word-break: break-all;
 }
 .task__input {
   border: none;

@@ -59,6 +59,7 @@ export default {
   margin-bottom: 2rem;
   padding: 0.5rem;
   width: 100%;
+  word-break: break-all;
 }
 .task__description{
   background-color: #eaecef;
