@@ -4,7 +4,7 @@
       {{ triggerButton }}
     </button>
     <div class="task is-disabled action">
-      <textarea class="task__input"></textarea>
+      <textarea @keyup.enter="handleEnter($event)" class="task__input"></textarea>
     </div>
     <div class="button-holder is-disabled action">
       <button data-action="save" class="button button__save">
@@ -62,6 +62,11 @@ export default {
       },
     };
 
+    const handleEnter = (e) => {
+      const actionsDiv =  e.srcElement.closest('.actions');
+      actions.save(null, actionsDiv)
+    }
+
     const handleClick = (e) => {
       e.stopPropagation;
       const button = e.target.closest('button');
@@ -71,7 +76,7 @@ export default {
       const actionsDiv = button.closest('.actions');
       actions[buttonAction](button, actionsDiv);
     };
-    return { handleClick };
+    return { handleClick, handleEnter };
   },
 };
 </script>
