@@ -33,8 +33,8 @@ export const useBoardStore = defineStore('Board', {
         description: '',
       });
     },
-    clearBoard(){
-      this.board = defaultBoard
+    clearBoard() {
+      this.board = { name: 'taks', columns: [] };
     },
     moveTask(fromTasks, toTasks, fromTaskIndex, toTaskIndex) {
       const taskToMove = fromTasks.splice(fromTaskIndex, 1)[0];
@@ -48,8 +48,8 @@ export const useBoardStore = defineStore('Board', {
     updateTask(value, task, key) {
       task.value[key] = value;
     },
-    updateColumn(value, column, key){
+    updateColumn(value, column, key) {
       column[key] = value;
-    }
+    },
   },
 });
