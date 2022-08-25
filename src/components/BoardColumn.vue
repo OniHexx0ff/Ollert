@@ -4,7 +4,7 @@
       class="column"
       :transferData="{ type: 'column', fromColumnIndex: columnIndex }"
     >
-      <div class="collumn__name">
+      <div class="column__name">
         <input
           @change="updateColumn($event, 'name')"
           @keyup.enter="updateColumn($event, 'name')"
@@ -88,17 +88,17 @@ export default {
 .column__add-list {
   padding: 0.25rem;
 }
-.collumn__name {
+.column__name {
   align-items: center;
   display: flex;
 }
-.collumn__name input {
+.column__name input {
   font-weight: bold;
   margin-bottom: 2rem;
   margin-left: 0.25rem;
   background-color: transparent;
 }
-.collumn__name input:focus {
+.column__name input:focus {
   box-shadow: inset 0 0 0 2px #0079bf;
 }
 .container {
