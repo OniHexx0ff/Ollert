@@ -23,6 +23,7 @@
       />
       <ActionDiv
         @save="saveTask"
+        class="add-task__holder"
         triggerButton="+ Add task"
         saveButton="Save task"
       />
@@ -69,6 +70,9 @@ export default {
 </script>
 
 <style>
+.add-task__holder .button__show-actions{
+  width: 100%;
+}
 .column {
   background-color: #ebecf0;
   border-radius: 0.5rem;
