@@ -5,12 +5,15 @@
       :transferData="{ type: 'column', fromColumnIndex: columnIndex }"
     >
       <div class="column__name">
-        <input
+        <textarea
+          ref="textarea"
+          @input="handleGrowth($event)"
           @change="updateColumn($event, 'name')"
           @keyup.enter="updateColumn($event, 'name')"
           type="text"
           :value="column.name"
-        />
+        >
+        </textarea>
       </div>
 
       <ColumnTask
@@ -33,6 +36,7 @@
 
 <script>
 import { useBoardStore } from '../stores/Board';
+import { onMounted, ref } from 'vue';
 
 import AppDrag from '@/components/AppDrag.vue';
 import AppDrop from '@/components/AppDrop.vue';
@@ -60,17 +64,45 @@ export default {
   },
   setup(props) {
     const boardStore = useBoardStore();
-    const updateColumn= (event, key) => {
-      console.log(props.column)
-      boardStore.updateColumn(event.target.value, props.column, key)
-    }
-    return { ...useBoardMethods(props), updateColumn };
+    const textarea = ref(null);
+
+    onMounted(() => {
+      textarea.value.style.height = calcHeight(textarea.value.value) + 'px';
+    });
+
+    const calcHeight = (value) => {
+      let numberOfLineBreaks = 0
+      let counter = 0
+      for (let index = 0; index < value.length; index++) {
+        counter++;
+        if (value[index] === '\n'){
+          numberOfLineBreaks++;
+          counter = 0;
+        } 
+        if (counter === 35){
+          value = ([value.slice(0, index), '\n', value.slice(index)].join(''))
+          numberOfLineBreaks++;
+          counter = 0;
+        } 
+      }
+      const newHeight = 20 * numberOfLineBreaks + 24;
+      return newHeight;
+    };
+    const handleGrowth = (e) => {
+      e.target.style.height = calcHeight(e.target.value) + 'px';
+    };
+
+    const updateColumn = (event, key) => {
+      console.log(props.column);
+      boardStore.updateColumn(event.target.value, props.column, key);
+    };
+    return { ...useBoardMethods(props), textarea, updateColumn, handleGrowth };
   },
 };
 </script>
 
 <style>
-.add-task__holder .button__show-actions{
+.add-task__holder .button__show-actions {
   width: 100%;
 }
 .column {
@@ -92,13 +124,20 @@ export default {
   align-items: center;
   display: flex;
 }
-.column__name input {
+
+.column__name > textarea {
+  overflow: hidden;
+  resize: none;
+}
+
+.column__name > textarea {
+  background-color: transparent;
   font-weight: bold;
   margin-bottom: 2rem;
   margin-left: 0.25rem;
-  background-color: transparent;
+  width: 100%;
 }
-.column__name input:focus {
+.column__name textarea:focus {
   box-shadow: inset 0 0 0 2px #0079bf;
 }
 .container {
