@@ -40,10 +40,11 @@ import { onMounted, ref } from 'vue';
 
 import AppDrag from '@/components/AppDrag.vue';
 import AppDrop from '@/components/AppDrop.vue';
-
 import ColumnTask from './ColumnTask.vue';
 import ActionDiv from './ActionDiv.vue';
 import useBoardMethods from '../useBoardMethods';
+
+import {newHeight, handleHeight} from '../utils.js'
 
 export default {
   components: {
@@ -67,34 +68,18 @@ export default {
     const textarea = ref(null);
 
     onMounted(() => {
-      textarea.value.style.height = calcHeight(textarea.value.value) + 'px';
+      
+      const {height} = newHeight(textarea.value.value)
+      textarea.value.style.height = height + 'px';
     });
 
-    const calcHeight = (value) => {
-      let numberOfLineBreaks = 0
-      let counter = 0
-      for (let index = 0; index < value.length; index++) {
-        counter++;
-        if (value[index] === '\n'){
-          numberOfLineBreaks++;
-          counter = 0;
-        } 
-        if (counter === 35){
-          value = ([value.slice(0, index), '\n', value.slice(index)].join(''))
-          numberOfLineBreaks++;
-          counter = 0;
-        } 
-      }
-      const newHeight = 20 * numberOfLineBreaks + 24;
-      return newHeight;
-    };
     const handleGrowth = (e) => {
-      e.target.style.height = calcHeight(e.target.value) + 'px';
-    };
+      handleHeight(e.target)
+    } 
 
-    const updateColumn = (event, key) => {
-      console.log(props.column);
-      boardStore.updateColumn(event.target.value, props.column, key);
+    const updateColumn = (e, key) => {
+      e.target.blur()
+      boardStore.updateColumn(e.target.value, props.column, key);
     };
     return { ...useBoardMethods(props), textarea, updateColumn, handleGrowth };
   },

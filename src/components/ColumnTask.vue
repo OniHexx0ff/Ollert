@@ -35,4 +35,30 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.task {
+  align-items: center;
+  background-color: white;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+  padding: 0.8rem;
+}
+.task__item {
+  display: flex;
+  flex-shrink: 0;
+  font-weight: bold;
+  width: 100%;
+  word-break: break-all;
+  text-align: left;
+}
+.task__input {
+  border: none;
+  height: 100%;
+  resize: none;
+  width: 100%;
+}
+
+</style>

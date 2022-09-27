@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Board from "../views/Board.vue";
-import Task from "../components/Task.vue"
+import Boards from "../views/Boards.vue";
+import Task from "../views/Task.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
+      path: "/board",
       name: "board",
       component: Board,
       children:[
@@ -17,6 +18,11 @@ const router = createRouter({
         }
       ]
     },
+    {
+      path: "/",
+      name: "boards",
+      component: Boards,
+    }
   ],
 });
 

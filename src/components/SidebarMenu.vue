@@ -69,7 +69,7 @@ export default {
 
 <style scoped>
 .config-menu {
-  background-color: rgba(21, 20, 20, 0.629);
+  background-color: rgb(102,102,102);
   cursor: pointer;
   display: flex;
   height: 100vh;
@@ -83,7 +83,7 @@ export default {
   position: absolute;
   right: 0;
   top: 1.25rem;
-  color: rgba(255, 255, 255, 0.557);
+  color: white;
   width: 30px;
   height: 30px;
 }
@@ -113,7 +113,7 @@ export default {
 
 .open {
   width: 300px;
-  background-color: rgba(21, 20, 20, 0.629);
+  background-color: rgb(102,102,102);
 }
 .position-unset {
   position: unset;

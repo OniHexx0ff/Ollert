@@ -2,11 +2,13 @@ import { defineStore } from 'pinia';
 import defaultBoard from '../default-board';
 import { uuid } from '../utils';
 
-const board = JSON.parse(localStorage.getItem('board')) || defaultBoard;
+const boards = JSON.parse(localStorage.getItem('boards')) || {}
+const board = Object.values(boards)[0] 
 
 export const useBoardStore = defineStore('Board', {
   state: () => {
     return {
+      boards,
       board,
     };
   },
@@ -23,6 +25,10 @@ export const useBoardStore = defineStore('Board', {
       },
   },
   actions: {
+    createBoard(name) {
+      const newUuid = uuid()
+      this.boards[newUuid] = { name, id: newUuid, columns: [] }
+    },
     createColum(name) {
       this.board.columns.push({ name, tasks: [] });
     },
@@ -34,7 +40,7 @@ export const useBoardStore = defineStore('Board', {
       });
     },
     clearBoard() {
-      this.board = { name: 'taks', columns: [] };
+      this.board.columns = [] 
     },
     moveTask(fromTasks, toTasks, fromTaskIndex, toTaskIndex) {
       const taskToMove = fromTasks.splice(fromTaskIndex, 1)[0];
@@ -44,6 +50,9 @@ export const useBoardStore = defineStore('Board', {
       const columnList = this.board.columns;
       const columnToMove = columnList.splice(fromColumnIndex, 1)[0];
       columnList.splice(toColumnIndex, 0, columnToMove);
+    },
+    setActiveBoard(id){
+      this.board = boards[id]
     },
     updateTask(value, task, key) {
       task.value[key] = value;

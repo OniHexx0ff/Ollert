@@ -4,7 +4,12 @@
       {{ triggerButton }}
     </button>
     <div class="task is-disabled action">
-      <textarea @keyup.enter="handleEnter($event)" class="task__input"></textarea>
+      <textarea
+        ref="textarea"
+        @keyup.enter="handleEnter($event)"
+        @input="handleGrowth($event)"
+        class="task__input"
+      ></textarea>
     </div>
     <div class="button-holder is-disabled action">
       <button data-action="save" class="button button__save">
@@ -29,6 +34,9 @@
 </template>
 
 <script>
+import { onUpdated, ref } from 'vue';
+
+import { handleHeight, newHeight } from '../utils';
 export default {
   props: {
     triggerButton: {
@@ -41,20 +49,30 @@ export default {
     },
   },
   setup(_, context) {
+    const textarea = ref(null);
+
+    onUpdated(() => {
+      const {height} = newHeight(textarea.value.value)
+      textarea.value.style.height =  height + 'px';
+    });
+
     const actions = {
       trigger(button, actions) {
         button.style.display = 'none';
         actions.querySelectorAll('.action').forEach((element) => {
           element.style.display = 'flex';
         });
+        actions.querySelector('textarea').focus()
       },
       hide(_, actions) {
-        const text = actions.querySelector('textarea') || actions.querySelector('input');
-        actions.querySelector('.button.button__show-actions').style.display ='flex';
+        const text =
+          actions.querySelector('textarea') || actions.querySelector('input');
+        actions.querySelector('.button.button__show-actions').style.display =
+          'flex';
         actions.querySelectorAll('.action').forEach((element) => {
           element.style.display = 'none';
         });
-        text.value = ''
+        text.value = '';
       },
       save(_, actions) {
         context.emit('save', actions);
@@ -62,10 +80,14 @@ export default {
       },
     };
 
+    const handleGrowth = (e) => {
+      handleHeight(e.target, 32);
+    };
+
     const handleEnter = (e) => {
-      const actionsDiv =  e.srcElement.closest('.actions');
-      actions.save(null, actionsDiv)
-    }
+      const actionsDiv = e.srcElement.closest('.actions');
+      actions.save(null, actionsDiv);
+    };
 
     const handleClick = (e) => {
       e.stopPropagation;
@@ -76,7 +98,8 @@ export default {
       const actionsDiv = button.closest('.actions');
       actions[buttonAction](button, actionsDiv);
     };
-    return { handleClick, handleEnter };
+
+    return { handleClick, handleEnter, handleGrowth };
   },
 };
 </script>
@@ -85,7 +108,7 @@ export default {
 .actions {
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
+  width: 350px;
 }
 .action {
   display: flex;

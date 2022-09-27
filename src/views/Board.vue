@@ -100,28 +100,7 @@ export default {
   position: fixed;
   width: 100%;
 }
-.task {
-  align-items: center;
-  background-color: white;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 0.5rem;
-  padding: 0.8rem;
-}
-.task__item {
-  display: flex;
-  flex-shrink: 0;
-  font-weight: bold;
-  width: 100%;
-  word-break: break-all;
-}
-.task__input {
-  border: none;
-  width: 100%;
-  height: 100%;
-}
+
 
 .is-disabled {
   display: none;

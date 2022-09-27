@@ -1,6 +1,7 @@
 import { uuid } from './utils';
 
 export default {
-  name: 'taks',
+  name: 'tasks',
+  id: uuid(),
   columns: [],
 };
