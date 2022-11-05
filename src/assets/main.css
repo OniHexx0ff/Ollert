@@ -1,9 +1,13 @@
+:root{
+  --navbar-height: 64px
+}
+
+
 body,
 html {
   margin: 0;
   height: 100%;
 }
-
 #app,
 input,
 textarea {

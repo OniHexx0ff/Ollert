@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Board from "../views/Board.vue";
 import Boards from "../views/Boards.vue";
+import CreateBoard from "../views/CreateBoard.vue"
 import Task from "../views/Task.vue"
 
 const router = createRouter({
@@ -22,6 +23,13 @@ const router = createRouter({
       path: "/",
       name: "boards",
       component: Boards,
+      children:[
+        {
+          path:'createBoard',
+          name: 'createBoard',
+          component:  CreateBoard
+        }
+      ]
     }
   ],
 });

@@ -1,7 +1,10 @@
 <template>
-  <div class="navbar">
-    
+  <Navbar></Navbar>
+
+  <div v-if="isModalOpen" @click.self="closeModal()" class="task-view">
+    <router-view />
   </div>
+
   <div class="boards">
     <div class="boards-container">
       <div
@@ -12,44 +15,50 @@
       >
         <h1>{{ board.name }}</h1>
       </div>
-      <div @click="createBoard()" class="board-selection new">
-        <h1>Create new board</h1>
-      </div>
+
     </div>
   </div>
-
 </template>
 
 <script>
+import Navbar from '../components/Navbar.vue'
+
 import { useBoardStore } from '../stores/Board';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { computed } from 'vue';
 
 export default {
+  components:{
+    Navbar
+  },
+
   setup() {
     const boardStore = useBoardStore();
     const router = useRouter();
+    const route = useRoute();
+    const isModalOpen = computed(() => route.name == 'createBoard');
 
     const boardClicked = (id) => {
-      boardStore.setActiveBoard(id)
+      boardStore.setActiveBoard(id);
       router.push({ name: 'board' });
     };
 
-    const createBoard = () => {
-      boardStore.createBoard('Task')
+    const closeModal = () => {
+      router.push({ name: 'boards' });
     };
-    return { boardStore, boardClicked, createBoard };
+
+    return {
+      boardStore,
+      isModalOpen,
+      boardClicked,
+      closeModal,
+    };
   },
 };
 </script>
 
 <style scoped>
-
-  .navbar{
-    width: 100%;
-    height: 48px;
-    background-color: rgb(102,102,102);
-  }
-.boards{
+.boards {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -57,7 +66,8 @@ export default {
 }
 .boards-container {
   display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  
 }
 
 .board-selection {
@@ -71,6 +81,7 @@ export default {
   margin-bottom: 2rem;
   margin-right: 2rem;
   width: 300px;
+  overflow: hidden;
 }
 .new {
   box-sizing: border-box;

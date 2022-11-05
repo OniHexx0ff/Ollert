@@ -1,17 +1,17 @@
 <template>
-  <div class="task-view">
-    <div class="task__body" ref="taskBody">
-      <h3 class="task__body-text">Name</h3>
+  <Modal>
+    <template v-slot:body>
+      <h3 class="text">Name:</h3>
       <textarea
         @input="handleGrowth($event)"
         @change="updadeProprety($event, 'name')"
         @keyup.enter="updadeProprety($event, 'name')"
         type="text"
         :value="task.name"
-        class="task__name"
+        class="name"
       >
       </textarea>
-      <h3 class="task__body-text">Description</h3>
+      <h3 class="text">Description:</h3>
       <textarea
         @input="handleGrowth($event)"
         @change="updadeProprety($event, 'description')"
@@ -19,31 +19,43 @@
         cols="30"
         rows="2"
         :value="task.description"
-        class="task__description"
+        class="description"
       ></textarea>
-    </div>
-  </div>
+    </template>
+    <template v-slot:actions>
+      <button class="create" @click="closeModal()">Close</button>
+    </template>
+  </Modal>
 </template>
 
 <script>
+import Modal from '../components/Modal.vue';
+
 import { computed, onUpdated, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import { handleHeight, newHeight } from '../utils';
 import { useBoardStore } from '../stores/Board';
 export default {
+  components: { Modal },
+
   setup() {
     const boardStore = useBoardStore();
     const route = useRoute();
-    const taskBody = ref(null);
+    const router = useRouter()
+
 
     onMounted(() => {
-      const textarea = taskBody.value.querySelectorAll('textarea');
+      const textarea = document.querySelector('.modal .body').querySelectorAll('textarea');
       textarea.forEach((element) => {
         const { height } = newHeight(element.value);
         element.style.height = height + 'px';
       });
     });
+
+    const closeModal = () => {
+      router.push({ name: 'board' });
+    };
 
     const handleGrowth = (e) => {
       handleHeight(e.target, 55);
@@ -53,57 +65,47 @@ export default {
       return boardStore.getTask(route.params.id);
     });
     const updadeProprety = (e, key) => {
-      e.target.blur()
+      e.target.blur();
       boardStore.updateTask(e.target.value, task, key);
     };
-    return { boardStore, task, taskBody, updadeProprety, handleGrowth };
+    return { boardStore, task, closeModal, updadeProprety, handleGrowth };
   },
 };
 </script>
 
 <style scoped>
-.task-view {
-  background-color: white;
-  border-radius: 0.5rem;
-  cursor: default;
-  display: flex;
-  max-height: 500px;
-  margin: auto;
-  margin-top: 5rem;
-  position: relative;
-  padding: 1rem;
-  width: 600px;
-}
-.task__body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-weight: bold;
-  width: 100%;
-  padding: 1rem;
-}
-.task__body textarea {
+textarea {
+  background-color: #eaecef;
   border: none;
   font-weight: bold;
-  /* font-size: x-large; */
+  font-size: 20px;
   overflow: hidden;
-  padding: 0.5rem;
+  padding: 0.5rem 0 0.5rem 0;
   resize: none;
-  width: 100%;
   word-break: break-all;
+  width: 100%;
 }
-.task__name {
+.create {
+  background-color: #2185d0;
+  border-radius: 0.25rem;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.7rem;
+  font-size: 18px;
+  font-weight: bold;
+  width: 110px;
+}
+
+.name {
   margin-bottom: 2rem;
 }
-.task__description {
-  background-color: #eaecef;
-}
-.task__body-text {
+.text {
   width: 100%;
   text-align: left;
 }
-.task__name:focus,
-.task__description:focus {
+.name:focus,
+.description:focus {
   box-shadow: inset 0 0 0 2px #0079bf;
 }
 </style>

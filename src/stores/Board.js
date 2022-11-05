@@ -42,6 +42,12 @@ export const useBoardStore = defineStore('Board', {
     clearBoard() {
       this.board.columns = [] 
     },
+    deleteBoard(){
+      console.log(this.boards)
+      delete this.boards[this.board.id]
+      this.board =  Object.values(this.boards)[0] || ""
+      // this.boards[this.board.id].splice(this.board.id,1)
+    },
     moveTask(fromTasks, toTasks, fromTaskIndex, toTaskIndex) {
       const taskToMove = fromTasks.splice(fromTaskIndex, 1)[0];
       toTasks.splice(toTaskIndex, 0, taskToMove);

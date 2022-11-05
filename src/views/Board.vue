@@ -1,7 +1,8 @@
 <template>
-  <main>
+
+    <Navbar :isBoardsView="false"></Navbar> 
+    <!-- <SidebarMenu /> -->
     <div class="container">
-      <SidebarMenu />
       <div class="board">
         <BoardColumn
           v-for="(column, columnIndex) of boardStore.board.columns"
@@ -23,7 +24,7 @@
         <router-view />
       </div>
     </div>
-  </main>
+
 </template>
 
 <script>
@@ -34,12 +35,13 @@ import { onMounted } from 'vue';
 import { useBoardStore } from '../stores/Board';
 import { lateralScroll } from '../utils';
 
+import Navbar from '../components/Navbar.vue'
 import SidebarMenu from '../components/SidebarMenu.vue';
 import BoardColumn from '../components/BoardColumn.vue';
 import ActionDiv from '../components/ActionDiv.vue';
 
 export default {
-  components: { BoardColumn, ActionDiv, SidebarMenu },
+  components: { BoardColumn, ActionDiv, SidebarMenu, Navbar },
   setup() {
     const boardStore = useBoardStore();
     const route = useRoute();
@@ -70,10 +72,11 @@ export default {
 };
 </script>
 <style>
+
 .board {
   background-color: #73c6b6;
   display: flex;
-  height: 100vh;
+  height: calc(100vh - var(--navbar-height));
   justify-content: flex-start;
   overflow: auto;
   width: 100%;
