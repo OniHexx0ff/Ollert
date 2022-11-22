@@ -81,6 +81,10 @@ export default {
   overflow: auto;
   width: 100%;
 }
+
+.column .drop{
+  width: 350px;
+}
 .new-element:hover {
   background-color: rgb(176, 176, 176);
   color: rgb(60, 58, 58);
